@@ -23,11 +23,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class HttpHandler extends AbstractMessageHandler {
 
     static String statCmd = "stat";
-    static ByteBuffer headBuffer = ByteBuffer.allocate(200);
 
-    static {
-        headBuffer.put("HTTP/1.1 200\nContent-Type: text/plain;charset=UTF-8\n\n".getBytes(ServerContext.get().getConfiguration().getOutStringEncoding()));
-    }
+    final byte[] headArray = "HTTP/1.1 200\nContent-Type: text/plain;charset=UTF-8\n\n".getBytes();
 
 
     static AtomicBoolean isUsed = new AtomicBoolean(false);
@@ -49,8 +46,7 @@ public class HttpHandler extends AbstractMessageHandler {
 
             //并发  乐观锁
             while (!isUsed.compareAndSet(false, true)){log.info("dd");};
-            headBuffer.flip();
-            socketChannel.write(new ByteBuffer[]{headBuffer, content});
+            socketChannel.write(new ByteBuffer[]{ByteBuffer.wrap(headArray), content});
             isUsed.set(false);
         } catch (IOException e) {
             isUsed.set(false);
