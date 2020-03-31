@@ -1,5 +1,6 @@
 package server.core;
 
+import lombok.extern.slf4j.Slf4j;
 import server.handler.connector.HandlerChain;
 import server.handler.connector.input.InputHandlerChainFactory;
 import server.handler.connector.output.OutputHandlerChainFactory;
@@ -12,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * 对SocketChannel进行封装，
  */
+@Slf4j
 public class Connector
 {
     private SocketChannel channel;
@@ -59,6 +61,7 @@ public class Connector
             channel.close();
         } catch (IOException e)
         {
+            log.warn("connector关闭失败");
             e.printStackTrace();
         }
     }

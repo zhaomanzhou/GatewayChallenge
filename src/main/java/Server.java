@@ -11,6 +11,7 @@ import service.handler.HttpHandler;
 import service.handler.ServerStatusHandler;
 
 import java.nio.charset.Charset;
+import java.util.Scanner;
 
 /**
  * @author zhaomanzhou
@@ -21,21 +22,30 @@ public class Server {
 
     static {
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-        loggerContext.getLogger("root").setLevel(Level.valueOf("info"));
+        loggerContext.getLogger("root").setLevel(Level.valueOf("error"));
     }
     public static void main(String[] args) {
 
-        int threadSize = Runtime.getRuntime().availableProcessors()*2 + 3;
+        int threadSize = Runtime.getRuntime().availableProcessors()*2 + 2;
         int poolSize = 500;
 
         if(args.length > 0)
         {
             threadSize = Integer.parseInt(args[0]);
         }
+
         if(args.length > 1)
         {
             poolSize = Integer.parseInt(args[1]);
         }
+
+        if(args.length > 2)
+        {
+            LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+            loggerContext.getLogger("root").setLevel(Level.valueOf("info"));
+        }
+
+
 
 
         ServerConfiguration configuration = new ServerConfiguration.ServerConfigurationBuilder()
@@ -53,6 +63,17 @@ public class Server {
         ServerBootstrap bootstrap = new ServerBootstrap();
 
         bootstrap.start();
-        log.info("server started on port: " + configuration.getPort());
+        System.out.println("server started on port: " + configuration.getPort());
+//        Scanner sc = new Scanner(System.in);
+//        while (true)
+//        {
+//            String next = sc.next();
+//            if(next.equals("quit"))
+//            {
+//                bootstrap.close();
+//                break;
+//            }
+//        }
+//        System.out.println("Server stopped");
     }
 }

@@ -22,9 +22,7 @@ public class ChannelIOUtil
             if(readed == -1)
                 throw new IOException("连接关闭");
             result =  new String(buffer.array(), 0, readed, StandardCharsets.UTF_8);
-        }catch (IOException e) {
-            throw e;
-        }finally {
+        } finally {
             pool.releasePool(buffer);
         }
 

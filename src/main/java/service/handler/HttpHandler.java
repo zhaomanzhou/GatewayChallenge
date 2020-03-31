@@ -39,22 +39,24 @@ public class HttpHandler extends AbstractMessageHandler {
         //log.info("request path: {}", s);
 
         s = s.substring(s.indexOf("/")+1);
-        s = s.substring(0, s.indexOf("/"));
+        //log.info(s);
+        s = s.substring(0, s.indexOf(" "));
         //log.info("request path: {}", s);
         ByteBuffer content = null;
-
+        SocketChannel socketChannel = connector.getSocketChannel();
         try {
             content = handleMessage(s);
-            SocketChannel socketChannel = connector.getSocketChannel();
 
             //并发  乐观锁
-            while (!isUsed.compareAndSet(false, true));
+            while (!isUsed.compareAndSet(false, true)){log.info("dd");};
             headBuffer.flip();
             socketChannel.write(new ByteBuffer[]{headBuffer, content});
             isUsed.set(false);
         } catch (IOException e) {
+            isUsed.set(false);
             log.warn("Write Exception {}", e.getMessage());
         }finally {
+
             if(content != null)
             {
                 ChannelIOUtil.pool.releasePool(content);
