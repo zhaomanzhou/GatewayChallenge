@@ -12,7 +12,7 @@
 #### 直接使用start.sh脚本
 1. `chmod +x start.sh`
 2. `sh start.sh`
-####直接运行jar包
+#### 直接运行jar包
 1. `java -jar GatewayChallenge-1.0.jar 10`
 ## 整体架构
 ![整体架构图](assert/design.png)
